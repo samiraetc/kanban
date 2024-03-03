@@ -35,6 +35,7 @@ Abra [http://localhost:3000](http://localhost:3000) no browser para acessar a ap
 ### FRONTEND
 - Os cards possuem Drag & Drop, para facilitar o transporte de um card de uma coluna para outra
 - É possível editar o titulo e o conteudo do card clicando em cima dos respectivos, ou seja, não há necessidade de clicar no icone de Edit
+- É possível criar um card em qualquer coluna, será enviado para o back o lista do botão clicado
 
 ## Requisitos solicitados
 
