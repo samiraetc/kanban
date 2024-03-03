@@ -1,8 +1,19 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+## Stacks utilizadas no projeto
 
-First, run the development server:
+<div align="center">
+
+![Next.JS](https://img.shields.io/badge/-%20NEXT%20JS%20-black?style=for-the-badge&logo=react&labelColor=black)
+![Node](https://img.shields.io/badge/-%20NODE%2020%20-gray?style=for-the-badge&logo=nodedotjs)
+![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![ESLint](https://img.shields.io/badge/ESLint-4B3263?style=for-the-badge&logo=eslint&logoColor=white)
+</div>
+
+
+## Antes de tudo
+
+Primeiro, rode a aplicação no ambiente de desenvolvimento:
 
 ```bash
 npm run dev
@@ -14,27 +25,35 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abra [http://localhost:3000](http://localhost:3000) no browser para acessar a aplicação.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+## Funcionalidades implementadas além dos requisitos solicitados
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+### BACKEND
+- Rota das colunas no backend
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+### FRONTEND
+- Os cards possuem Drag & Drop, para facilitar o transporte de um card de uma coluna para outra
+- É possível editar o titulo e o conteudo do card clicando em cima dos respectivos, ou seja, não há necessidade de clicar no icone de Edit
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Requisitos solicitados
 
-## Learn More
+- A API que provemos deve ser usada para persistência dos cards (ela trabalha com persistência em memória) e não deve ser alterada.
+- A interface gráfica será apenas uma tela, nela deve haver três colunas chamadas "To do", "Doing" e "Done".
+- Os cards deve ser listados nessas colunas de acordo com o valor do campo lista presente no card. Os valores de lista devem ser "ToDo", "Doing" e "Done", respectivamente.
+- Deve haver um local que permita criar um card passando valores para o titulo e conteudo, deve haver um botão para adicionar o card.
+- Um novo card deve sempre cair na lista "To Do" após persistido na API.
+- O card deverá ter dois modos: Visualização e Edição.
+- No modo de visualização o card terá um cabeçalho com seu título, o conteúdo e 4 botões.
+- O conteudo do card pode ser markdown, utilize uma biblioteca para renderizá-lo no modo de visualização (recomendamos uma combinação de dompurify e marked). Lembre-se de estilizar o html resultante do parse do markdown... [Se quiser usar highlight para campos de código no markdown será um diferencial].
+- Um dos botões do card deverá excluí-lo (persistindo pela API), outro colocá-lo em modo de edição.
+- Os dois outros botões devem mudar o card para a lista anterior (se houver) ou para a lista seguinte (se houver). A decisão de desabilitar, esconder ou apenas não gerar o evento desses botões quando não houver a proxima lista ou a anterior é sua.
+- No modo de edição, o card conterá um input para o titulo, um textarea para o conteudo e dois botões.
+- No modo de edição, um dos botões cancela a edição, quando precionado os campos devem ser resetados para o valor atual e voltar o card ao modo de visualização.
+- O outro botão salva o card, persistindo as informações pela API. Também volta ao modo de visualização em seguida.
+- Toda decisão de visual, de UI e UX é sua. Apenas utilize uma única tela.
+- Se estiver usando REACT priorize componentes funcionais e hooks.
+- O projeto deve ser colocado em um repositório GITHUB ou equivalente, estar público, e conter um readme.md que explique em detalhes qualquer comando ou configuração necessária para fazer o projeto rodar.
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
