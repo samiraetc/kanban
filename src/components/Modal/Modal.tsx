@@ -4,9 +4,20 @@ import { Dialog, Transition } from "@headlessui/react";
 interface ModalProps {
     open: boolean;
     close: () => void;
+    addNew: (title: string, description: string, list: string) => void;
 }
 
-const Modal = ({ open, close }: ModalProps) => {
+const Modal = ({ open, close, addNew }: ModalProps) => {
+    const [title, setTitle] = useState<string>("");
+    const [description, setDescription] = useState<string>("");
+
+    const handleCloseModal = () => {
+
+        close()
+        setTitle('')
+        setDescription('')
+    }
+
     return (
         <Transition.Root show={open} as={Fragment}>
             <Dialog as="div" className="relative z-10" onClose={close}>
@@ -33,15 +44,37 @@ const Modal = ({ open, close }: ModalProps) => {
                             leaveFrom="opacity-100 translate-y-0 sm:scale-100"
                             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                         >
-                            <Dialog.Panel className="relative transform overflow-hidden rounded-lg  bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-xl sm:p-6">
-                                <div>
-                                    <h3 className="text-base font-semibold leading-6 text-gray-900">Manage subscription</h3>
-                                    <div className="mt-2 max-w-xl text-sm text-gray-500">
-                                        <p>
-                                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae voluptatibus corrupti atque
-                                            repudiandae nam.
-                                        </p>
+                            <Dialog.Panel className="relative transform overflow-hidden rounded-lg  bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
+                                <div className="flex flex-col gap-2">
+
+                                    <div className="text-md font-semibold ">
+                                        <textarea
+                                            autoFocus
+                                            className="w-full outline-none resize-none"
+                                            value={title}
+                                            rows={2}
+                                            placeholder="Titulo"
+                                            onChange={(e) => setTitle(e.target.value)}
+                                        />
                                     </div>
+
+
+
+                                    <div className="text-gray-500 text-sm ">
+                                        <textarea
+                                            autoFocus
+                                            rows={4}
+                                            className="w-full outline-none resize-none"
+                                            value={description}
+                                            placeholder="Descrição"
+                                            onChange={(e) => setDescription(e.target.value)}
+                                        />
+                                    </div>
+
+                                    <div className="flex justify-end">
+                                        <button className="rounded-xl w-24 p-2 text-center text-gray-700 bg-light-green font-semibold text-sm" onClick={() => { addNew(title, description, 'to_do'); handleCloseModal() }}>Salvar</button>
+                                    </div>
+
                                 </div>
                             </Dialog.Panel>
                         </Transition.Child>
