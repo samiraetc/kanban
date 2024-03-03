@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { CgTrash } from "react-icons/cg";
+import { TbPencil } from "react-icons/tb";
+import Modal from "../Modal/Modal";
 
 interface CardProps {
     card: CardTypes;
@@ -23,6 +25,13 @@ const Card = ({ card, handleDeleteCard, handleEditCard }: CardProps) => {
     const [isEditingDescription, setIsEditinDescription] = useState<boolean>(false)
     const [title, setTitle] = useState<string>(card.titulo);
     const [description, setDescription] = useState<string>(card.conteudo)
+    const [openModal, setOpenModal] = useState<boolean>(false);
+
+
+    const handleOpenToEdit = () => {
+        console.log(card)
+        setOpenModal(true)
+    }
     return (
         <section>
             <div
@@ -33,7 +42,7 @@ const Card = ({ card, handleDeleteCard, handleEditCard }: CardProps) => {
                 onDragOver={(e) => e.preventDefault()}
                 className="flex gap-4 w-full flex-col "
             >
-                <div className="bg-white p-4 rounded-lg shadow flex flex-col gap-2">
+                <div className="bg-white p-4 rounded-lg shadow flex flex-col  gap-2">
                     {isEditingTitle ? (
                         <div className="text-md font-semibold ">
                             <textarea autoFocus className="w-full outline-none resize-none" rows={2} onBlur={() => {
@@ -57,14 +66,20 @@ const Card = ({ card, handleDeleteCard, handleEditCard }: CardProps) => {
                     )}
 
 
-                    <div className="flex justify-end">
+                    <div className="flex justify-end gap-2">
+                        <TbPencil className="h-5 w-5 text-gray-500 hover:text-green-600" onClick={() => handleOpenToEdit()} />
                         <CgTrash
                             className="h-5 w-5 text-gray-500 hover:text-red-500"
                             onClick={() => handleDeleteCard(card.id)}
                         />
+
+
+
                     </div>
                 </div>
             </div>
+
+            <Modal open={openModal} close={() => setOpenModal(false)} card={card} editCard={handleEditCard} />
         </section>
     );
 };

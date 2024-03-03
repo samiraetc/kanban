@@ -20,7 +20,7 @@ const Column = ({ column, children }: ColumnProps) => {
 
     return (
         <section>
-            <div className="w-96 flex flex-col gap-4 h-screen">
+            <div className="sm:w-64 md:w-96 flex flex-col gap-4 h-screen">
                 <div
                     className={`p-2  ${getColor.get(
                         column.key

@@ -1,25 +1,41 @@
 import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
+import { CardTypes } from "../Card/Card";
+import { RiCloseLine } from "react-icons/ri";
 
 interface ModalProps {
     open: boolean;
     close: () => void;
-    addNew: (title: string, description: string, list: string) => void;
+    addNew?: (title: string, description: string, list: string) => void;
+    editCard?: (value: {
+        id: string;
+        title: string;
+        description: string;
+    }) => void;
+    list?: string;
+    card?: CardTypes;
 }
 
-const Modal = ({ open, close, addNew }: ModalProps) => {
-    const [title, setTitle] = useState<string>("");
-    const [description, setDescription] = useState<string>("");
+const Modal = ({
+    open,
+    close,
+    addNew,
+    list = "to_do",
+    card,
+    editCard,
+}: ModalProps) => {
+
+    const [title, setTitle] = useState<string>(card?.id ? card?.titulo : "");
+    const [description, setDescription] = useState<string>(card?.id ? card?.conteudo : "");
 
     const handleCloseModal = () => {
-
-        close()
-        setTitle('')
-        setDescription('')
-    }
+        close();
+        !card && setTitle('')
+        !card && setDescription('')
+    };
 
     return (
-        <Transition.Root show={open} as={Fragment}>
+        <Transition.Root show={open} as={Fragment} key={card?.id ?? 'index'}>
             <Dialog as="div" className="relative z-10" onClose={close}>
                 <Transition.Child
                     as={Fragment}
@@ -46,8 +62,7 @@ const Modal = ({ open, close, addNew }: ModalProps) => {
                         >
                             <Dialog.Panel className="relative transform overflow-hidden rounded-lg  bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
                                 <div className="flex flex-col gap-2">
-
-                                    <div className="text-md font-semibold ">
+                                    <div className="flex text-md font-semibold ">
                                         <textarea
                                             autoFocus
                                             className="w-full outline-none resize-none"
@@ -56,9 +71,9 @@ const Modal = ({ open, close, addNew }: ModalProps) => {
                                             placeholder="Titulo"
                                             onChange={(e) => setTitle(e.target.value)}
                                         />
+
+                                        <RiCloseLine className="h-6 w-6 text-gray-400" onClick={handleCloseModal} />
                                     </div>
-
-
 
                                     <div className="text-gray-500 text-sm ">
                                         <textarea
@@ -71,10 +86,36 @@ const Modal = ({ open, close, addNew }: ModalProps) => {
                                         />
                                     </div>
 
-                                    <div className="flex justify-end">
-                                        <button className="rounded-xl w-24 p-2 text-center text-gray-700 bg-light-green font-semibold text-sm" onClick={() => { addNew(title, description, 'to_do'); handleCloseModal() }}>Salvar</button>
+                                    <div className="flex justify-end gap-4">
+                                        <button
+                                            className="rounded-xl w-24 p-2 text-center text-red-700 bg-light-red font-semibold text-sm"
+                                            onClick={handleCloseModal}
+                                        >
+                                            Cancelar
+                                        </button>
+                                        {addNew && (
+                                            <button
+                                                className="rounded-xl w-24 p-2 text-center text-gray-700 bg-light-green font-semibold text-sm"
+                                                onClick={() => {
+                                                    addNew(title, description, list);
+                                                    handleCloseModal();
+                                                }}
+                                            >
+                                                Criar
+                                            </button>
+                                        )}
+                                        {editCard && card && (
+                                            <button
+                                                className="rounded-xl w-24 p-2 text-center text-gray-700 bg-light-green font-semibold text-sm"
+                                                onClick={() => {
+                                                    editCard({ id: card?.id, title, description });
+                                                    handleCloseModal();
+                                                }}
+                                            >
+                                                Salvar
+                                            </button>
+                                        )}
                                     </div>
-
                                 </div>
                             </Dialog.Panel>
                         </Transition.Child>
