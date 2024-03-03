@@ -3,7 +3,7 @@
 Para executar o backend faça:
 
 ```console
-> cd backend
+> cd BACK
 > npm install
 > npm run server
 ```
