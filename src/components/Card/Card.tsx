@@ -36,7 +36,7 @@ const Card = ({ card, handleDeleteCard, handleEditCard }: CardProps) => {
                 <div className="bg-white p-4 rounded-lg shadow flex flex-col gap-2">
                     {isEditingTitle ? (
                         <div className="text-md font-semibold ">
-                            <input autoFocus className="w-full outline-none" onBlur={() => {
+                            <textarea autoFocus className="w-full outline-none resize-none" rows={2} onBlur={() => {
                                 setIsEditingTitle(false)
                                 handleEditCard({ id: card.id, title, description })
                             }} value={title} onChange={(e) => setTitle(e.target.value)} />
@@ -47,7 +47,7 @@ const Card = ({ card, handleDeleteCard, handleEditCard }: CardProps) => {
 
                     {isEditingDescription ? (
                         <div className="text-gray-500 text-sm ">
-                            <input autoFocus className="w-full outline-none" type="textarea" onBlur={() => {
+                            <textarea autoFocus className="w-full outline-none resize-none" rows={4} onBlur={() => {
                                 setIsEditinDescription(false)
                                 handleEditCard({ id: card.id, title, description })
                             }} value={description} onChange={(e) => setDescription(e.target.value)} />
