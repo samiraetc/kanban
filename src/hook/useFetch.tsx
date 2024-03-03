@@ -1,7 +1,9 @@
 import { CardTypes } from "@/components/Card/Card";
+import { ColumnTypes } from "@/components/Column/Column";
 
 const AUTH_URL = "http://localhost:5000/login";
 const CARD_URL = "http://localhost:5000/cards";
+const COLUMN_URL = "http://localhost:5000/columns";
 
 const CREDENTIAL = { login: "letscode", senha: "lets@123" };
 
@@ -48,6 +50,26 @@ const useFetch = () => {
             });
     };
 
+    const getColumns = async (): Promise<ColumnTypes[]> => {
+        if (!token) await getToken();
+
+        return await fetch(COLUMN_URL, {
+            headers: { ...token, ...DEFAULT_HEADERS },
+        })
+            .then(async (res) => {
+                if (res.status === 200) {
+                    return res.json() as Promise<ColumnTypes[]>;
+                } else if (res.status === 401) {
+                    await getToken();
+                    return getColumns();
+                } else throw new Error("Código de status inesperado.");
+            })
+            .catch((error) => {
+                console.error(error);
+                throw new Error("Ocorreu um erro ao buscar as colunas.");
+            });
+    };
+
     const updateCard = async (card: {
         id?: string;
         titulo: string;
@@ -85,10 +107,10 @@ const useFetch = () => {
         })
             .then((res) => {
                 if (res.status === 201) return res.json();
-                if (res.status === 201) getCards()
+                if (res.status === 201) getCards();
                 else if (res.status === 401) getToken();
                 else throw new Error("unexpected status code");
-                return getCards()
+                return getCards();
             })
             .catch(console.error);
     };
@@ -118,6 +140,7 @@ const useFetch = () => {
         getCards,
         updateCard,
         removeCard,
+        getColumns,
     };
 };
 

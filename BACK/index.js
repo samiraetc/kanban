@@ -112,4 +112,27 @@ app.delete('/cards/:id', (req, res) => {
     res.json(cards);
 });
 
+
+let columns = [
+    {
+        title: "To do",
+        key: "to_do",
+    },
+    {
+        title: "Doing",
+        key: "doing",
+    },
+    {
+        title: "Done",
+        key: "done",
+    },
+]
+
+app.get('/columns', (req, res) => {
+
+    res.json(columns);
+    res.end();
+
+});
+
 app.listen(5000, () => console.log('listening on http://localhost:5000'));

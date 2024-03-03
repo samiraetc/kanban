@@ -13,6 +13,7 @@ const config: Config = {
         "light-gray": "#E1E4E8",
         "light-lavander": "#F0E7F6",
         "light-green": "#CBDFD8",
+        "strong-green": "#CBDFD8",
         "light-red": "#facfcf",
       },
     },

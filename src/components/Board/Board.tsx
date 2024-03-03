@@ -3,32 +3,21 @@ import Column, { ColumnTypes } from "../Column/Column";
 import Card, { CardTypes } from "../Card/Card";
 import Modal from "../Modal/Modal";
 import useFetch from "@/hook/useFetch";
-import { error } from "console";
+import Loading from "../Loading/Loading";
 
-const columns = [
-    {
-        title: "To do",
-        key: "to_do",
-    },
-    {
-        title: "Doing",
-        key: "doing",
-    },
-    {
-        title: "Done",
-        key: "done",
-    },
-];
+
 
 const Board = () => {
-    const { getCards, updateCard, removeCard, addCard } = useFetch();
+    const { getCards, updateCard, removeCard, addCard, getColumns } = useFetch();
     const [tasks, setTasks] = useState<CardTypes[]>([]);
     const [open, setOpen] = useState<boolean>(false);
     const [list, setList] = useState<string>("to_do");
+    const [columns, setColumns] = useState<ColumnTypes[]>([]);
 
     useEffect(() => {
         (async () => {
             setTasks(await getCards());
+            setColumns(await getColumns())
         })();
     }, []);
 
@@ -104,9 +93,9 @@ const Board = () => {
         newCard && setTasks([...tasks, newCard]);
     };
 
-    return (
+    return columns.length >= 1 ? (
         <div className="bg-primary-gray p-4 m-6 rounded-lg flex lg:flex-row flex-col justify-between">
-            {columns.map((column: ColumnTypes, columnIndex: number) => {
+            {columns?.map((column: ColumnTypes, columnIndex: number) => {
                 return (
                     <div
                         className="h-full"
@@ -152,7 +141,7 @@ const Board = () => {
                 list={list}
             />
         </div>
-    );
+    ) : (<Loading />);
 };
 
 export default Board;
