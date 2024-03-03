@@ -1,5 +1,8 @@
 import { CardTypes } from "@/components/Card/Card";
 import { ColumnTypes } from "@/components/Column/Column";
+import { ToasterContext } from "@/context/ToasterContext";
+import { useContext } from "react";
+import { Toaster, toast } from "sonner";
 
 const AUTH_URL = "http://localhost:5000/login";
 const CARD_URL = "http://localhost:5000/cards";
@@ -14,6 +17,8 @@ const DEFAULT_HEADERS = {
 
 const useFetch = () => {
     let token: any;
+
+    const { setToasterInfo, setShowToaster } = useContext(ToasterContext);
 
     const authenticate = async () => {
         return await fetch(AUTH_URL, {
@@ -42,11 +47,15 @@ const useFetch = () => {
                 } else if (res.status === 401) {
                     await getToken();
                     return getCards();
-                } else throw new Error("Código de status inesperado.");
+                } else throw new Error("unexpected status code");
             })
-            .catch((error) => {
-                console.error(error);
-                throw new Error("Ocorreu um erro ao buscar os cards.");
+            .catch(() => {
+                setToasterInfo({
+                    title: "Ocorreu um erro ao buscar os cards.",
+                    msg: "Tente novamente mais tarde",
+                    type: "error",
+                });
+                throw setShowToaster(true);
             });
     };
 
@@ -62,11 +71,15 @@ const useFetch = () => {
                 } else if (res.status === 401) {
                     await getToken();
                     return getColumns();
-                } else throw new Error("Código de status inesperado.");
+                } else throw new Error("unexpected status code");
             })
-            .catch((error) => {
-                console.error(error);
-                throw new Error("Ocorreu um erro ao buscar as colunas.");
+            .catch(() => {
+                setToasterInfo({
+                    title: "Erro ao buscar as colunas",
+                    msg: "Tente novamente mais tarde",
+                    type: "error",
+                });
+                throw setShowToaster(true);
             });
     };
 
@@ -84,12 +97,20 @@ const useFetch = () => {
             body: JSON.stringify(card),
         })
             .then((res) => {
-                if (res.status === 200) return res.json();
-                else if (res.status === 401) getToken();
+                if (res.status === 200) {
+                    return res.json();
+                } else if (res.status === 401) getToken();
                 else throw new Error("unexpected status code");
                 return updateCard(card);
             })
-            .catch(console.error);
+            .catch(() => {
+                setToasterInfo({
+                    title: "Ocorreu um erro ao atualizar o cartão",
+                    msg: "Tente novamente mais tarde",
+                    type: "error",
+                });
+                throw setShowToaster(true);
+            });
     };
 
     const addCard = async (card: {
@@ -106,13 +127,22 @@ const useFetch = () => {
             body: JSON.stringify(card),
         })
             .then((res) => {
-                if (res.status === 201) return res.json();
+                if (res.status === 201) {
+                    return res.json();
+                }
                 if (res.status === 201) getCards();
                 else if (res.status === 401) getToken();
                 else throw new Error("unexpected status code");
                 return getCards();
             })
-            .catch(console.error);
+            .catch(() => {
+                setToasterInfo({
+                    title: "Ocorreu um erro ao adicionar um card",
+                    msg: "Tente novamente mais tarde",
+                    type: "error",
+                });
+                throw setShowToaster(true);
+            });
     };
 
     const removeCard = async (id: string): Promise<CardTypes[]> => {
@@ -127,11 +157,15 @@ const useFetch = () => {
                 else if (res.status === 401) {
                     await getToken();
                     return removeCard(id);
-                } else throw new Error("Código de status inesperado");
+                } else throw new Error("unexpected status code");
             })
-            .catch((error) => {
-                console.error(error);
-                throw new Error("Ocorreu um erro ao remover o cartão");
+            .catch(() => {
+                setToasterInfo({
+                    title: "Ocorreu um erro ao remover o cartão",
+                    msg: "Tente novamente mais tarde",
+                    type: "error",
+                });
+                throw setShowToaster(true);
             });
     };
 
