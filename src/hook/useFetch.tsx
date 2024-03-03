@@ -53,10 +53,10 @@ const useFetch = () => {
         titulo: string;
         conteudo: string;
         lista: string;
-    }) => {
+    }): Promise<CardTypes[]> => {
         if (!token) await getToken();
 
-        await fetch(`${CARD_URL}/${card.id}`, {
+        return await fetch(`${CARD_URL}/${card.id}`, {
             headers: { ...token, ...DEFAULT_HEADERS },
             method: "PUT",
             body: JSON.stringify(card),
@@ -78,16 +78,17 @@ const useFetch = () => {
     }) => {
         if (!token) await getToken();
 
-        await fetch(`${CARD_URL}`, {
+        return await fetch(`${CARD_URL}`, {
             headers: { ...token, ...DEFAULT_HEADERS },
             method: "POST",
             body: JSON.stringify(card),
         })
             .then((res) => {
                 if (res.status === 201) return res.json();
+                if (res.status === 201) getCards()
                 else if (res.status === 401) getToken();
                 else throw new Error("unexpected status code");
-                return updateCard(card);
+                return getCards()
             })
             .catch(console.error);
     };
