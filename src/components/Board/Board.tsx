@@ -17,6 +17,7 @@ const Board = () => {
             setTasks(await getCards());
             setColumns(await getColumns())
         })();
+        // react-hooks/exhaustive-deps
     }, []);
 
     const handleUpdateTask = (item: CardTypes) => {
@@ -95,6 +96,7 @@ const Board = () => {
             {columns?.map((column: ColumnTypes, columnIndex: number) => {
                 return (
                     <div
+                        key={columnIndex}
                         className="h-full"
                         onDropCapture={(e) => {
                             handleDrop(e, column.key);

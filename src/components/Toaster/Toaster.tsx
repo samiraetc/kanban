@@ -15,13 +15,14 @@ export default function Toaster() {
     const getIcon = new Map([
         [
             "error",
-            <HiOutlineXCircle className="size-6 text-red-400" aria-hidden="true" />,
+            <HiOutlineXCircle className="size-6 text-red-400" aria-hidden="true" key="error" />,
         ],
         [
             "success",
             <HiOutlineCheckCircle
                 className="size-5 text-green-600"
                 aria-hidden="true"
+                key="success"
             />,
         ],
         [
@@ -29,6 +30,7 @@ export default function Toaster() {
             <HiOutlineInformationCircle
                 className="size-5 text-blue-400"
                 aria-hidden="true"
+                key="info"
             />,
         ],
     ]);
