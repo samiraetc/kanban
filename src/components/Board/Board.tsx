@@ -5,8 +5,6 @@ import Modal from "../Modal/Modal";
 import useFetch from "@/hook/useFetch";
 import Loading from "../Loading/Loading";
 
-
-
 const Board = () => {
     const { getCards, updateCard, removeCard, addCard, getColumns } = useFetch();
     const [tasks, setTasks] = useState<CardTypes[]>([]);
@@ -78,7 +76,6 @@ const Board = () => {
         setOpen(false);
     };
 
-    const handleOpenModal = () => { };
 
     const handleAddNewCard = async (
         title: string,

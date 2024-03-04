@@ -1,19 +1,8 @@
 import { CardTypes } from "@/components/Card/Card";
 import { ColumnTypes } from "@/components/Column/Column";
 import { ToasterContext } from "@/context/ToasterContext";
+import { BASE_URL, CREDENTIAL, DEFAULT_HEADERS } from "@/pages/api/api";
 import { useContext } from "react";
-import { Toaster, toast } from "sonner";
-
-const AUTH_URL = "http://localhost:5000/login";
-const CARD_URL = "http://localhost:5000/cards";
-const COLUMN_URL = "http://localhost:5000/columns";
-
-const CREDENTIAL = { login: "letscode", senha: "lets@123" };
-
-const DEFAULT_HEADERS = {
-    Accept: "application/json",
-    "Content-Type": "application/json",
-};
 
 const useFetch = () => {
     let token: any;
@@ -21,7 +10,7 @@ const useFetch = () => {
     const { setToasterInfo, setShowToaster } = useContext(ToasterContext);
 
     const authenticate = async () => {
-        return await fetch(AUTH_URL, {
+        return await fetch(`${BASE_URL}/login`, {
             method: "POST",
             mode: "cors",
             body: JSON.stringify(CREDENTIAL),
@@ -40,7 +29,7 @@ const useFetch = () => {
     const getCards = async (): Promise<CardTypes[]> => {
         if (!token) await getToken();
 
-        return await fetch(CARD_URL, { headers: { ...token, ...DEFAULT_HEADERS } })
+        return await fetch(`${BASE_URL}/cards`, { headers: { ...token, ...DEFAULT_HEADERS } })
             .then(async (res) => {
                 if (res.status === 200) {
                     return res.json() as Promise<CardTypes[]>;
@@ -62,7 +51,7 @@ const useFetch = () => {
     const getColumns = async (): Promise<ColumnTypes[]> => {
         if (!token) await getToken();
 
-        return await fetch(COLUMN_URL, {
+        return await fetch(`${BASE_URL}/columns`, {
             headers: { ...token, ...DEFAULT_HEADERS },
         })
             .then(async (res) => {
@@ -91,7 +80,7 @@ const useFetch = () => {
     }): Promise<CardTypes[]> => {
         if (!token) await getToken();
 
-        return await fetch(`${CARD_URL}/${card.id}`, {
+        return await fetch(`${BASE_URL}/cards/${card.id}`, {
             headers: { ...token, ...DEFAULT_HEADERS },
             method: "PUT",
             body: JSON.stringify(card),
@@ -121,7 +110,7 @@ const useFetch = () => {
     }) => {
         if (!token) await getToken();
 
-        return await fetch(`${CARD_URL}`, {
+        return await fetch(`${BASE_URL}/cards`, {
             headers: { ...token, ...DEFAULT_HEADERS },
             method: "POST",
             body: JSON.stringify(card),
@@ -148,7 +137,7 @@ const useFetch = () => {
     const removeCard = async (id: string): Promise<CardTypes[]> => {
         if (!token) await getToken();
 
-        return fetch(`${CARD_URL}/${id}`, {
+        return fetch(`${BASE_URL}/cards/${id}`, {
             headers: { ...token, ...DEFAULT_HEADERS },
             method: "DELETE",
         })
