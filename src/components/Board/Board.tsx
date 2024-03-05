@@ -57,11 +57,6 @@ const Board = () => {
         );
 
         if (cardFiltered) {
-            await updateCard({
-                ...cardFiltered,
-                titulo: item.title,
-                conteudo: item.description,
-            });
 
             setTasks(
                 tasks?.map((task) =>
@@ -70,6 +65,13 @@ const Board = () => {
                         : task
                 )
             );
+            await updateCard({
+                ...cardFiltered,
+                titulo: item.title,
+                conteudo: item.description,
+            });
+
+        
         }
     };
 

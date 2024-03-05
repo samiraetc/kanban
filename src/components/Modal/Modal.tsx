@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { CardTypes } from "../Card/Card";
 import { RiCloseLine } from "react-icons/ri";
@@ -24,7 +24,6 @@ const Modal = ({
     card,
     editCard,
 }: ModalProps) => {
-
     const [title, setTitle] = useState<string>(card?.id ? card?.titulo : "");
     const [description, setDescription] = useState<string>(card?.id ? card?.conteudo : "");
 
@@ -33,6 +32,13 @@ const Modal = ({
         !card && setTitle('')
         !card && setDescription('')
     };
+
+    useEffect(() => {
+        if(card) {
+            setTitle(card?.titulo)
+            setDescription(card?.conteudo)
+        }
+    }, [editCard])
 
     return (
         <Transition.Root show={open} as={Fragment} key={card?.id ?? 'index'}>

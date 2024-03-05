@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CgTrash } from "react-icons/cg";
 import { TbPencil } from "react-icons/tb";
 import Modal from "../Modal/Modal";
@@ -29,9 +29,14 @@ const Card = ({ card, handleDeleteCard, handleEditCard }: CardProps) => {
 
 
     const handleOpenToEdit = () => {
-        console.log(card)
         setOpenModal(true)
     }
+
+    useEffect(() => {
+        setTitle(card.titulo)
+        setDescription(card.conteudo)
+    }, [openModal])
+
     return (
         <section>
             <div
