@@ -126,9 +126,14 @@ const Card = ({ card, handleDeleteCard, handleEditCard }: CardProps) => {
 
           <div className="flex justify-between items-center">
             <div className={`${textColor()} text-sm flex gap-2 items-center`}>
-              <IoCalendarOutline />{" "}
-              <span>{`${formatDate(card.data?.toString() ?? "")}`}</span>
+              {card?.data && (
+                <>
+                  <IoCalendarOutline />
+                  <span>{`${formatDate(card.data?.toString() ?? "")}`}</span>
+                </>
+              )}
             </div>
+
             <div className="flex justify-end gap-2">
               <TbPencil
                 className="h-5 w-5 text-gray-500 hover:text-green-600"

@@ -14,10 +14,11 @@ const DatePick = ({ date, setDate }: DatePickerProps) => {
     <div>
       <DatePicker
         showIcon
+        toggleCalendarOnIconClick
         dateFormat="dd/MM/yyyy HH:mm"
         closeOnScroll={true}
         showPopperArrow={false}
-        selected={date ? date : new Date()}
+        selected={date ? date : null}
         onChange={(date) => setDate(date)}
         className="outline-none ml-2"
         icon={<IoCalendarOutline />}

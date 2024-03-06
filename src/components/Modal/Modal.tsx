@@ -36,13 +36,14 @@ const Modal = ({
     card?.id ? card?.conteudo : ""
   );
   const [date, setDate] = useState<Date | null>(
-    card?.data ? new Date(card?.data) : new Date()
+    card?.data ? new Date(card?.data) : null
   );
 
   const handleCloseModal = () => {
     close();
     !card && setTitle("");
     !card && setDescription("");
+    !card && setDate(null);
   };
 
   useEffect(() => {
