@@ -36,6 +36,7 @@ Abra [http://localhost:3000](http://localhost:3000) no browser para acessar a ap
 - Os cards possuem Drag & Drop, para facilitar o transporte de um card de uma coluna para outra
 - É possível editar o titulo e o conteudo do card clicando em cima dos respectivos, ou seja, não há necessidade de clicar no icone de Edit
 - É possível criar um card em qualquer coluna, será enviado para o back o lista do botão clicado
+- É possível colocar uma data de entrega, se faltar 48h para a entrega a data fica laranja e se estiver atrasado fica em vermelho
 
 ## Requisitos solicitados
 
