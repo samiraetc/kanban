@@ -11,7 +11,6 @@ app.use(cors());
 app.use(express.json());
 
 app.use((req, res, next) => {
-    console.log(req.url, req.params, req.body);
     next();
 })
 
@@ -60,9 +59,9 @@ app.get('/cards', (req, res) => {
 
 app.post('/cards', (req, res) => {
 
-    const { titulo, conteudo, lista, id } = req.body;
+    const { titulo, conteudo, lista, data, id } = req.body;
     if (titulo && conteudo && lista && !id) {
-        const card = { titulo, conteudo, lista, id: uuid() };
+        const card = { titulo, conteudo, lista, data, id: uuid() };
         cards.push(card);
         res.status(201).json(card);
     }
@@ -97,11 +96,12 @@ const validateAndLogAlterationOrDeletion = (req, res, next) => {
 app.use('/cards/:id', validateAndLogAlterationOrDeletion);
 
 app.put('/cards/:id', (req, res) => {
-    const { titulo, conteudo, lista, id } = req.body;
+    const { titulo, conteudo, lista, id, data } = req.body;
     const card = cards.find(x => x.id === id);
     card.titulo = titulo;
     card.conteudo = conteudo;
     card.lista = lista;
+    card.data = data
     return res.status(200).json(card);
 });
 

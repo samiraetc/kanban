@@ -1,11 +1,9 @@
 {
-  "editor.formatOnSave": true,
   "git.mergeEditor": false,
+  "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
-  "prettier.enable": true,
-  "prettier.prettierPath": "./node_modules/prettier",
   "css.lint.unknownAtRules": "ignore",
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
