@@ -1,6 +1,4 @@
-export const BASE_URL = "http://localhost:3000/api";
-
-export const CREDENTIAL = { login: "letscode", senha: "lets@123" };
+export const BASE_URL = process.env.BACKEND_API;
 
 export const DEFAULT_HEADERS = {
   Accept: "application/json",
