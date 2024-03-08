@@ -8,7 +8,7 @@ export const ColumnsController = {
       const column = {
         id: uuidv4(),
         title: request.body.title,
-        key: request.body.key,
+        key: request.body.title.toLowerCase().replace(/\s/g, "_"),
       };
 
       const columns = await Columns.create(column);
@@ -21,8 +21,8 @@ export const ColumnsController = {
   },
   getAllColumns: async (request: Request, response: Response) => {
     try {
-      const columns = await Columns.find();
-      response.json({ columns });
+      const column = await Columns.find();
+      response.json({ column });
     } catch (error) {
       console.error(error);
       response.status(500).json({ msg: "Internal server error" });

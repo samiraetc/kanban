@@ -1,13 +1,15 @@
 import mongoose, { Schema, Document } from "mongoose";
 import { v4 as uuidv4 } from "uuid";
 
-interface ColumnsInterface extends Document {
+interface CardsInterface extends Document {
   id: string;
   title: string;
-  key: string;
+  description: string;
+  list: string;
+  date: string;
 }
 
-const columnsSchema = new Schema<ColumnsInterface>(
+const cardsSchema = new Schema<CardsInterface>(
   {
     id: {
       unique: true,
@@ -18,15 +20,14 @@ const columnsSchema = new Schema<ColumnsInterface>(
       type: String,
       require: true,
     },
-    key: {
+    description: {
       type: String,
       require: true,
     },
+    list: String,
+    date: String,
   },
   { versionKey: false }
 );
 
-export const Columns = mongoose.model<ColumnsInterface>(
-  "Columns",
-  columnsSchema
-);
+export const Cards = mongoose.model<CardsInterface>("Cards", cardsSchema);
