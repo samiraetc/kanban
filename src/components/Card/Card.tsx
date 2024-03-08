@@ -12,16 +12,16 @@ interface CardProps {
     id: string;
     title: string;
     description: string;
-    data?: Date | null;
+    date?: Date | null;
   }) => void;
 }
 
 export type CardTypes = {
   id: string;
-  titulo: string;
-  conteudo: string;
-  lista: string;
-  data?: Date | null;
+  title: string;
+  description: string;
+  list: string;
+  date?: Date | null;
 };
 
 const handleDragCard = (e: React.DragEvent<HTMLDivElement>, id: string) => {
@@ -32,16 +32,16 @@ const Card = ({ card, handleDeleteCard, handleEditCard }: CardProps) => {
   const [isEditingTitle, setIsEditingTitle] = useState<boolean>(false);
   const [isEditingDescription, setIsEditinDescription] =
     useState<boolean>(false);
-  const [title, setTitle] = useState<string>(card.titulo);
-  const [description, setDescription] = useState<string>(card.conteudo);
+  const [title, setTitle] = useState<string>(card.title);
+  const [description, setDescription] = useState<string>(card.description);
   const [openModal, setOpenModal] = useState<boolean>(false);
 
   const diferenceHours =
-    Math.abs(new Date(card.data ?? "").getTime() - new Date().getTime()) /
+    Math.abs(new Date(card.date ?? "").getTime() - new Date().getTime()) /
     (1000 * 60 * 60);
 
   const textColor = () => {
-    if (new Date(card.data ?? "").getTime() < new Date().getTime()) {
+    if (new Date(card.date ?? "").getTime() < new Date().getTime()) {
       return "text-red-400";
     }
     return diferenceHours >= 0 && diferenceHours <= 48
@@ -53,8 +53,8 @@ const Card = ({ card, handleDeleteCard, handleEditCard }: CardProps) => {
   };
 
   useEffect(() => {
-    setTitle(card.titulo);
-    setDescription(card.conteudo);
+    setTitle(card.title);
+    setDescription(card.description);
   }, [openModal]);
 
   return (
@@ -80,7 +80,7 @@ const Card = ({ card, handleDeleteCard, handleEditCard }: CardProps) => {
                     id: card.id,
                     title,
                     description,
-                    data: card.data,
+                    date: card.date,
                   });
                 }}
                 value={title}
@@ -92,7 +92,7 @@ const Card = ({ card, handleDeleteCard, handleEditCard }: CardProps) => {
               className="text-md font-semibold"
               onClick={() => setIsEditingTitle(true)}
             >
-              {card.titulo}
+              {card.title}
             </p>
           )}
 
@@ -108,7 +108,7 @@ const Card = ({ card, handleDeleteCard, handleEditCard }: CardProps) => {
                     id: card.id,
                     title,
                     description,
-                    data: card.data,
+                    date: card.date,
                   });
                 }}
                 value={description}
@@ -120,16 +120,16 @@ const Card = ({ card, handleDeleteCard, handleEditCard }: CardProps) => {
               className="text-gray-500 text-sm"
               onClick={() => setIsEditinDescription(true)}
             >
-              {card.conteudo}
+              {card.description}
             </p>
           )}
 
           <div className="flex justify-between items-center">
             <div className={`${textColor()} text-sm flex gap-2 items-center`}>
-              {card?.data && (
+              {card?.date && (
                 <>
                   <IoCalendarOutline />
-                  <span>{`${formatDate(card.data?.toString() ?? "")}`}</span>
+                  <span>{`${formatDate(card.date?.toString() ?? "")}`}</span>
                 </>
               )}
             </div>

@@ -6,18 +6,19 @@ import useFetch from "@/hook/useFetch";
 import Loading from "../Loading/Loading";
 
 const Board = () => {
-  const { getCards, updateCard, removeCard, addCard, getColumns } = useFetch();
+  const { fetchData, updateData, addData, removeData } = useFetch();
   const [tasks, setTasks] = useState<CardTypes[]>([]);
   const [open, setOpen] = useState<boolean>(false);
   const [list, setList] = useState<string>("to_do");
   const [columns, setColumns] = useState<ColumnTypes[]>([]);
 
   useEffect(() => {
-    (async () => {
-      setTasks(await getCards());
-      setColumns(await getColumns());
-    })();
-    // react-hooks/exhaustive-deps
+    const fetch = async () => {
+      setColumns((await fetchData("/columns")).column);
+      setTasks((await fetchData("/cards")).cards);
+    };
+
+    fetch();
   }, []);
 
   const handleUpdateTask = (item: CardTypes) => {
@@ -37,45 +38,39 @@ const Board = () => {
     );
 
     if (cardFiltered) {
-      handleUpdateTask({ ...cardFiltered, lista: key });
-      await updateCard({ ...cardFiltered, lista: key });
+      handleUpdateTask({ ...cardFiltered, list: key });
+      await updateData(`/cards/${cardId}`, {
+        ...cardFiltered,
+        list: key,
+      });
     }
   };
 
   const handleDeleteCard = async (id: string) => {
     const remove: CardTypes | undefined = tasks?.find((task) => task.id === id);
-    remove && setTasks(await removeCard(id));
+    const removedItem = await removeData(`/cards/${id}`);
+    remove && setTasks(removedItem.card);
   };
 
   const handleEditCard = async (item: {
     id: string;
     title: string;
     description: string;
-    data?: Date | null;
+    date?: Date | null;
   }) => {
     const cardFiltered: CardTypes | undefined = tasks?.find(
       (card) => card.id === item.id
     );
 
     if (cardFiltered) {
-      setTasks(
-        tasks?.map((task) =>
-          task.id === item.id
-            ? {
-                ...task,
-                titulo: item.title,
-                conteudo: item.description,
-                data: item.data,
-              }
-            : task
-        )
-      );
-      await updateCard({
+      const updatedCard = await updateData(`/cards/${item.id}`, {
         ...cardFiltered,
-        titulo: item.title,
-        conteudo: item.description,
-        data: item.data,
+        title: item.title,
+        description: item.description,
+        date: item.date,
       });
+
+      setTasks(updatedCard.card);
     }
   };
 
@@ -87,18 +82,19 @@ const Board = () => {
     title: string,
     description: string,
     list: string,
-    data?: Date | null
+    date?: Date | null
   ) => {
-    const newCard: CardTypes | undefined = await addCard({
-      titulo: title,
-      conteudo: description,
-      lista: list,
-      data: data,
+    const newCard: { card: CardTypes[] } = await addData("/cards", {
+      title,
+      description,
+      list,
+      date: date,
     });
-    newCard && setTasks([...tasks, newCard]);
+
+    newCard && setTasks(newCard.card);
   };
 
-  return columns.length >= 1 ? (
+  return columns?.length >= 1 ? (
     <div className="bg-primary-gray p-4 m-6 rounded-lg flex lg:flex-row flex-col justify-between">
       {columns?.map((column: ColumnTypes, columnIndex: number) => {
         return (
@@ -123,7 +119,7 @@ const Board = () => {
               </div>
               {tasks?.map((card: CardTypes, cardIndex: number) => {
                 return (
-                  card.lista === column.key && (
+                  card.list === column.key && (
                     <Card
                       card={card}
                       key={cardIndex}

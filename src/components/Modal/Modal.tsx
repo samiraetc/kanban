@@ -11,13 +11,13 @@ interface ModalProps {
     title: string,
     description: string,
     list: string,
-    data?: Date | null
+    date?: Date | null
   ) => void;
   editCard?: (value: {
     id: string;
     title: string;
     description: string;
-    data?: Date | null;
+    date?: Date | null;
   }) => void;
   list?: string;
   card?: CardTypes;
@@ -31,12 +31,12 @@ const Modal = ({
   card,
   editCard,
 }: ModalProps) => {
-  const [title, setTitle] = useState<string>(card?.id ? card?.titulo : "");
+  const [title, setTitle] = useState<string>(card?.id ? card?.title : "");
   const [description, setDescription] = useState<string>(
-    card?.id ? card?.conteudo : ""
+    card?.id ? card?.description : ""
   );
   const [date, setDate] = useState<Date | null>(
-    card?.data ? new Date(card?.data) : null
+    card?.date ? new Date(card?.date) : null
   );
 
   const handleCloseModal = () => {
@@ -48,8 +48,8 @@ const Modal = ({
 
   useEffect(() => {
     if (card) {
-      setTitle(card?.titulo);
-      setDescription(card?.conteudo);
+      setTitle(card?.title);
+      setDescription(card?.description);
     }
   }, [editCard]);
 
@@ -138,7 +138,7 @@ const Modal = ({
                             id: card?.id,
                             title,
                             description,
-                            data: date,
+                            date,
                           });
                           handleCloseModal();
                         }}
