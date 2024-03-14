@@ -7,6 +7,7 @@ interface CardsInterface extends Document {
   description: string;
   list: string;
   date: string;
+  user_id: string;
 }
 
 const cardsSchema = new Schema<CardsInterface>(
@@ -26,6 +27,7 @@ const cardsSchema = new Schema<CardsInterface>(
     },
     list: String,
     date: String,
+    user_id: String,
   },
   { versionKey: false }
 );

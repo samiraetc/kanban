@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { Columns } from "../models/ColumnsModel";
 import { v4 as uuidv4 } from "uuid";
+import { Users } from "../models/UsersModel";
 
 export const ColumnsController = {
   addColumn: async (request: Request, response: Response) => {
@@ -9,6 +10,7 @@ export const ColumnsController = {
         id: uuidv4(),
         title: request.body.title,
         key: request.body.title.toLowerCase().replace(/\s/g, "_"),
+        user: await Users.findOne({ id: request.body.user_id }),
       };
 
       const columns = await Columns.create(column);
