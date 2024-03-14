@@ -14,7 +14,7 @@ export const authOptions = {
         password: { label: "password", type: "password" },
       },
       async authorize(credentials, req) {
-        const res = await fetch("http://localhost:3000/api/login", {
+        const res = await fetch(`${BASE_URL}/login`, {
           method: "POST",
           body: JSON.stringify(credentials),
           headers: { "Content-Type": "application/json" },
@@ -43,7 +43,7 @@ export const authOptions = {
       return session;
     },
     async redirect() {
-      return "http://localhost:3001/";
+      return "https://kanban-eight-ashen.vercel.app/";
     },
   },
 };
