@@ -6,7 +6,7 @@ import useFetch from "@/hook/useFetch";
 import Loading from "../Loading/Loading";
 
 const Board = () => {
-  const { fetchData, updateData, addData, removeData } = useFetch();
+  const { fetchData, updateData, postData, removeData, loading } = useFetch();
   const [tasks, setTasks] = useState<CardTypes[]>([]);
   const [open, setOpen] = useState<boolean>(false);
   const [list, setList] = useState<string>("to_do");
@@ -18,7 +18,9 @@ const Board = () => {
       setTasks((await fetchData("/cards")).cards);
     };
 
+
     fetch();
+
   }, []);
 
   const handleUpdateTask = (item: CardTypes) => {
@@ -46,33 +48,6 @@ const Board = () => {
     }
   };
 
-  const handleDeleteCard = async (id: string) => {
-    const remove: CardTypes | undefined = tasks?.find((task) => task.id === id);
-    const removedItem = await removeData(`/cards/${id}`);
-    remove && setTasks(removedItem.card);
-  };
-
-  const handleEditCard = async (item: {
-    id: string;
-    title: string;
-    description: string;
-    date?: Date | null;
-  }) => {
-    const cardFiltered: CardTypes | undefined = tasks?.find(
-      (card) => card.id === item.id
-    );
-
-    if (cardFiltered) {
-      const updatedCard = await updateData(`/cards/${item.id}`, {
-        ...cardFiltered,
-        title: item.title,
-        description: item.description,
-        date: item.date,
-      });
-
-      setTasks(updatedCard.card);
-    }
-  };
 
   const handleCloseModal = () => {
     setOpen(false);
@@ -84,18 +59,18 @@ const Board = () => {
     list: string,
     date?: Date | null
   ) => {
-    const newCard: { card: CardTypes[] } = await addData("/cards", {
+    const newCard: CardTypes = await postData("/cards", {
       title,
       description,
       list,
       date: date,
     });
 
-    newCard && setTasks(newCard.card);
+    newCard && setTasks([...tasks, newCard]);
   };
 
-  return columns?.length >= 1 ? (
-    <div className="bg-primary-gray p-4 m-6 rounded-lg flex lg:flex-row flex-col justify-between">
+  return !loading ? (
+    <div className="flex lg:flex-row flex-col justify-between">
       {columns?.map((column: ColumnTypes, columnIndex: number) => {
         return (
           <div
@@ -123,8 +98,10 @@ const Board = () => {
                     <Card
                       card={card}
                       key={cardIndex}
-                      handleDeleteCard={handleDeleteCard}
-                      handleEditCard={handleEditCard}
+                      handleUpdateTask={handleUpdateTask}
+                      setTasks={setTasks}
+                      tasks={tasks}
+
                     />
                   )
                 );

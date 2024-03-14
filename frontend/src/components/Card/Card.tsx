@@ -4,16 +4,13 @@ import { TbPencil } from "react-icons/tb";
 import Modal from "../Modal/Modal";
 import { IoCalendarOutline } from "react-icons/io5";
 import { formatDate } from "@/utils/format";
+import useFetch from "@/hook/useFetch";
 
 interface CardProps {
   card: CardTypes;
-  handleDeleteCard: (id: string) => void;
-  handleEditCard: (value: {
-    id: string;
-    title: string;
-    description: string;
-    date?: Date | null;
-  }) => void;
+  handleUpdateTask: (it: CardTypes) => void,
+  tasks: CardTypes[]
+  setTasks: (value: CardTypes[]) => void
 }
 
 export type CardTypes = {
@@ -28,7 +25,8 @@ const handleDragCard = (e: React.DragEvent<HTMLDivElement>, id: string) => {
   e.dataTransfer.setData("id", id);
 };
 
-const Card = ({ card, handleDeleteCard, handleEditCard }: CardProps) => {
+const Card = ({ card, handleUpdateTask, tasks, setTasks }: CardProps) => {
+  const { updateData, removeData } = useFetch();
   const [isEditingTitle, setIsEditingTitle] = useState<boolean>(false);
   const [isEditingDescription, setIsEditinDescription] =
     useState<boolean>(false);
@@ -50,6 +48,41 @@ const Card = ({ card, handleDeleteCard, handleEditCard }: CardProps) => {
   };
   const handleOpenToEdit = () => {
     setOpenModal(true);
+  };
+
+  const handleDeleteCard = async (id: string) => {
+
+    await removeData(`/cards/${id}`);
+    setTasks(tasks?.filter((task: CardTypes) => task.id !== id));
+  };
+
+  const handleEditCard = async (item: {
+    id: string;
+    title: string;
+    description: string;
+    date?: Date | null;
+  }) => {
+    const cardFiltered: CardTypes | undefined = tasks?.find(
+      (card) => card.id === item.id
+    );
+
+    if (cardFiltered) {
+      const updatedCard = await updateData(`/cards/${item.id}`, {
+        ...cardFiltered,
+        title: item.title,
+        description: item.description,
+        date: item.date,
+      });
+
+
+      updatedCard && handleUpdateTask({
+        ...cardFiltered,
+        title: item.title,
+        description: item.description,
+        date: item.date,
+      })
+
+    }
   };
 
   useEffect(() => {

@@ -19,7 +19,7 @@ const Column = ({ column, children }: ColumnProps) => {
   ]);
 
   return (
-    <section className="p-4">
+    <section draggable className="p-4 bg-gray-100 rounded-lg">
       <div className="sm:w-64 md:w-96 flex flex-col gap-4 h-screen">
         <div className="flex items-center justify-between">
           <div
