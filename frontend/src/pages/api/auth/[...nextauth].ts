@@ -1,4 +1,3 @@
-import { BASE_URL } from "@/pages/api/api";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
@@ -14,7 +13,7 @@ export const authOptions = {
         password: { label: "password", type: "password" },
       },
       async authorize(credentials, req) {
-        const res = await fetch(`https://kanban-kep9.vercel.app/api/login`, {
+        const res = await fetch(`${process.env.BACKEND_API}/login`, {
           method: "POST",
           body: JSON.stringify(credentials),
           headers: { "Content-Type": "application/json" },
@@ -43,7 +42,7 @@ export const authOptions = {
       return session;
     },
     async redirect() {
-      return "https://kanban-eight-ashen.vercel.app/";
+      return `${process.env.FRONTEND_URL}`;
     },
   },
 };
