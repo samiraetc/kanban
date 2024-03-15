@@ -43,7 +43,7 @@ export const authOptions = {
       return session;
     },
     async redirect() {
-      return "http://localhost:3001/";
+      return "https://kanban-eight-ashen.vercel.app/";
     },
   },
 };
