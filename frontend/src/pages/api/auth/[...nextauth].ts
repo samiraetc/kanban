@@ -25,6 +25,14 @@ export const authOptions = {
           return user;
         }
 
+        if (user) {
+          return user;
+        } else {
+          console.log(`${BASE_URL}/login`);
+
+          return null;
+        }
+
         return null;
       },
     }),
@@ -43,7 +51,7 @@ export const authOptions = {
       return session;
     },
     async redirect() {
-      return "https://kanban-eight-ashen.vercel.app/";
+      return "http://localhost:3001/";
     },
   },
 };
