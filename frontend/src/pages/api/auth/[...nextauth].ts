@@ -14,26 +14,18 @@ export const authOptions = {
         password: { label: "password", type: "password" },
       },
       async authorize(credentials, req) {
-        const res = await fetch(`${BASE_URL}/login`, {
+        const res = await fetch(`"https://kanban-kep9.vercel.app/api/login`, {
           method: "POST",
           body: JSON.stringify(credentials),
           headers: { "Content-Type": "application/json" },
         });
         const user = await res.json();
 
-        if (res.ok && user) {
-          return user;
-        }
-
         if (user) {
           return user;
         } else {
-          console.log(`${BASE_URL}/login`);
-
           return null;
         }
-
-        return null;
       },
     }),
   ],
